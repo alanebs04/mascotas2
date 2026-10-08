@@ -20,6 +20,7 @@ import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.Font;
@@ -133,6 +134,7 @@ public class GUIveterinaria extends JFrame {
 		JButton btnLlenar = new JButton("Llnear Formulario");
 		btnLlenar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				dueño dueño1 = new dueño(textNombre.getText(),textApellido.getText(),textCorreo.getText(),textTelefono.getText());
 				String especie = (String) comboBoxespecie.getSelectedItem();
 				String raza = (String) comboBoxraza.getSelectedItem();
@@ -143,6 +145,8 @@ public class GUIveterinaria extends JFrame {
 				LocalDate fechaCita = LocalDate.parse(textoFecha);
 				cita cita1 = new cita(fechaCita,textNombreVet.getText(),animal1,dueño1,"");
 				listado.add(cita1);
+				JOptionPane.showMessageDialog(null, "Formulario Llenado, solo Falta"+"/n"+"que el doctor llene las observaciones");
+				
 			}
 		});
 		toolBar.add(btnLlenar);

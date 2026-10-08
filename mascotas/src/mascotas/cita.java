@@ -2,7 +2,7 @@ package mascotas;
 
 import java.time.LocalDate;
 
-public class cita {
+public class cita implements Comparable<cita>{
 	private LocalDate fecha;
 	private String Medico;
 	private animal Animal;
@@ -45,6 +45,11 @@ public class cita {
 	}
 	public void setObsrvacion(String obsrvacion) {
 		this.obsrvacion = obsrvacion;
+	}
+	@Override
+	public int compareTo(cita o) {
+		// TODO Auto-generated method stub
+		return this.fecha.compareTo(o.getFecha());
 	}
 	
 
