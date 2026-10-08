@@ -24,6 +24,8 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.awt.event.ItemEvent;
 
 public class GUIveterinaria extends JFrame {
@@ -66,42 +68,18 @@ public class GUIveterinaria extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JSpinner spinner = new JSpinner();
+		spinner.setBounds(124, 238, 77, 24);
+		contentPane.add(spinner);
+		SpinnerDateModel modeloFecha = new SpinnerDateModel();
+		spinner.setModel(modeloFecha);
+		JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "dd/MM/yyyy");
+        spinner.setEditor(editor);
+		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setBackground(UIManager.getColor("Button.shadow"));
 		toolBar.setBounds(0, 10, 639, 24);
 		contentPane.add(toolBar);
-		
-		JButton btnLlenar = new JButton("Llnear Formulario");
-		btnLlenar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		toolBar.add(btnLlenar);
-		
-		JButton btnObservaciones = new JButton("Observaciones ");
-		btnObservaciones.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		toolBar.add(btnObservaciones);
-		
-		JButton btnverCitas = new JButton("Ver Citas");
-		toolBar.add(btnverCitas);
-		
-		textNombreA = new JTextField();
-		textNombreA.setBounds(71, 75, 96, 18);
-		contentPane.add(textNombreA);
-		textNombreA.setColumns(10);
-		
-		textEdad = new JTextField();
-		textEdad.setColumns(10);
-		textEdad.setBounds(71, 108, 96, 18);
-		contentPane.add(textEdad);
-		
-		JLabel lblNewLabel = new JLabel("Nombre");
-		lblNewLabel.setBounds(10, 78, 44, 12);
-		contentPane.add(lblNewLabel);
-		
 		JComboBox comboBoxraza = new JComboBox();
 		comboBoxraza.setBounds(71, 170, 96, 29);
 		contentPane.add(comboBoxraza);
@@ -151,6 +129,49 @@ public class GUIveterinaria extends JFrame {
 		comboBoxespecie.addItem("Pez");
 		comboBoxespecie.addItem("Serpiente");
 		comboBoxespecie.addItem("Perico");
+		
+		JButton btnLlenar = new JButton("Llnear Formulario");
+		btnLlenar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dueño dueño1 = new dueño(textNombre.getText(),textApellido.getText(),textCorreo.getText(),textTelefono.getText());
+				String especie = (String) comboBoxespecie.getSelectedItem();
+				String raza = (String) comboBoxraza.getSelectedItem();
+				animal animal1 = new animal(textNombreA.getText(),Integer.parseInt(textEdad.getText()),especie,raza);
+				java.util.Date fechaUtil = (java.util.Date) spinner.getValue();
+				SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+				String textoFecha = formato.format(fechaUtil);
+				LocalDate fechaCita = LocalDate.parse(textoFecha);
+				cita cita1 = new cita(fechaCita,textNombreVet.getText(),animal1,dueño1,"");
+				listado.add(cita1);
+			}
+		});
+		toolBar.add(btnLlenar);
+		
+		JButton btnObservaciones = new JButton("Observaciones ");
+		btnObservaciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		toolBar.add(btnObservaciones);
+		
+		JButton btnverCitas = new JButton("Ver Citas");
+		toolBar.add(btnverCitas);
+		
+		textNombreA = new JTextField();
+		textNombreA.setBounds(71, 75, 96, 18);
+		contentPane.add(textNombreA);
+		textNombreA.setColumns(10);
+		
+		textEdad = new JTextField();
+		textEdad.setColumns(10);
+		textEdad.setBounds(71, 108, 96, 18);
+		contentPane.add(textEdad);
+		
+		JLabel lblNewLabel = new JLabel("Nombre");
+		lblNewLabel.setBounds(10, 78, 44, 12);
+		contentPane.add(lblNewLabel);
+		
+
 		
 		
 		JLabel lblEdad = new JLabel("Edad");
@@ -215,13 +236,7 @@ public class GUIveterinaria extends JFrame {
 		lblNewLabel_2_1.setBounds(244, 44, 109, 21);
 		contentPane.add(lblNewLabel_2_1);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(124, 238, 77, 24);
-		contentPane.add(spinner);
-		SpinnerDateModel modeloFecha = new SpinnerDateModel();
-		spinner.setModel(modeloFecha);
-		JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "dd/MM/yyyy");
-        spinner.setEditor(editor);
+		
         
         JLabel lblNewLabel_3 = new JLabel("Fecha");
         lblNewLabel_3.setBounds(48, 243, 44, 12);
