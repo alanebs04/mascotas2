@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+
+
+
 import javax.swing.JToolBar;
 import javax.swing.SpinnerDateModel;
 import javax.swing.JButton;
@@ -13,12 +16,15 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.Scrollbar;
 import java.awt.event.ActionListener;
+import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class GUIveterinaria extends JFrame {
 
@@ -31,6 +37,7 @@ public class GUIveterinaria extends JFrame {
 	private JTextField textCorreo;
 	private JTextField textTelefono;
 	private JTextField textNombreVet;
+	private TreeSet<cita> listado = new TreeSet<>();
 
 	/**
 	 * Launch the application.
@@ -95,13 +102,56 @@ public class GUIveterinaria extends JFrame {
 		lblNewLabel.setBounds(10, 78, 44, 12);
 		contentPane.add(lblNewLabel);
 		
-		JComboBox comboBoxespecie = new JComboBox();
-		comboBoxespecie.setBounds(71, 132, 96, 29);
-		contentPane.add(comboBoxespecie);
-		
 		JComboBox comboBoxraza = new JComboBox();
 		comboBoxraza.setBounds(71, 170, 96, 29);
 		contentPane.add(comboBoxraza);
+		
+		JComboBox comboBoxespecie = new JComboBox();
+		comboBoxespecie.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				String seleccion = (String) comboBoxespecie.getSelectedItem();
+				comboBoxraza.removeAllItems();
+				if(seleccion.equals("Perro")){
+					comboBoxraza.addItem("Golden Retriver");
+					comboBoxraza.addItem("Pastor Alemán");
+					comboBoxraza.addItem("Bulldog Francés");
+					comboBoxraza.addItem("Chihuahua");
+				}
+				if(seleccion.equals("Gato")){
+					comboBoxraza.addItem("Siamés");
+					comboBoxraza.addItem("Maine Coon");
+					comboBoxraza.addItem("Persa");
+					comboBoxraza.addItem("Sphynx");
+				}
+				if(seleccion.equals("Serpiente")){
+					comboBoxraza.addItem("Pitón Real");
+					comboBoxraza.addItem("Falsa Coral");
+					comboBoxraza.addItem("Boa Constrictor");
+					comboBoxraza.addItem("Serpiente del Maíz");
+				}
+				if(seleccion.equals("Perico")){
+					comboBoxraza.addItem("Australiano");
+					comboBoxraza.addItem("Monje");
+					comboBoxraza.addItem("Frente Naranja");
+					comboBoxraza.addItem("Gargantiblanca");
+				}
+				if(seleccion.equals("Pez")){
+					comboBoxraza.addItem("Betta");
+					comboBoxraza.addItem("Guppy");
+					comboBoxraza.addItem("Ángel");
+					comboBoxraza.addItem("Goldfish");
+				}
+
+			}
+		});
+		comboBoxespecie.setBounds(71, 132, 96, 29);
+		contentPane.add(comboBoxespecie);
+		comboBoxespecie.addItem("Perro");
+		comboBoxespecie.addItem("Gato");
+		comboBoxespecie.addItem("Pez");
+		comboBoxespecie.addItem("Serpiente");
+		comboBoxespecie.addItem("Perico");
+		
 		
 		JLabel lblEdad = new JLabel("Edad");
 		lblEdad.setBounds(10, 111, 44, 12);
