@@ -37,4 +37,11 @@ public class dueño {
 		this.telefono = telefono;
 	}
 	
+	 @Override
+	    public String toString() {
+	        return nombre + " " + apellido;
+	
+	 }
+	 
+	
 }

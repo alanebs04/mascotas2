@@ -37,4 +37,9 @@ public class animal {
 		this.raza = raza;
 	}
 	
+	 @Override
+	    public String toString() {
+	        return nombre + " - " + especie;
+	 }
+	
 }

@@ -52,5 +52,8 @@ public class cita implements Comparable<cita>{
 		return this.fecha.compareTo(o.getFecha());
 	}
 	
-
+	@Override
+	public String toString() {
+	    return "Dueño: " + Dueño + "\nMascota: " + Animal  + "\nFecha: " + fecha;
+	}
 }

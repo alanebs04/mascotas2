@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 
@@ -41,7 +42,7 @@ public class GUIveterinaria extends JFrame {
 	private JTextField textTelefono;
 	private JTextField textNombreVet;
 	private TreeSet<cita> listado = new TreeSet<>();
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -147,6 +148,7 @@ public class GUIveterinaria extends JFrame {
 				listado.add(cita1);
 				JOptionPane.showMessageDialog(null, "Formulario Llenado, solo Falta"+"/n"+"que el doctor llene las observaciones");
 				
+				
 			}
 		});
 		toolBar.add(btnLlenar);
@@ -159,6 +161,25 @@ public class GUIveterinaria extends JFrame {
 		toolBar.add(btnObservaciones);
 		
 		JButton btnverCitas = new JButton("Ver Citas");
+		btnverCitas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				StringBuilder sb = new StringBuilder();
+				 int numero = 1;
+			        for (cita c : listado) {
+			            sb.append("--- Cita agregada ").append(numero).append(" ---\n");
+			            sb.append(c.toString()).append("\n\n");
+			            numero++;
+			        }
+
+			        JTextArea areaMensaje = new JTextArea(sb.toString());
+			        areaMensaje.setEditable(false);
+			        JScrollPane scroll = new JScrollPane(areaMensaje);
+			        scroll.setPreferredSize(new java.awt.Dimension(400, 300));
+			        JOptionPane.showMessageDialog(null, scroll, "Citas guardadas (" + listado.size() + ")", JOptionPane.INFORMATION_MESSAGE);
+		
+		}
+	});
 		toolBar.add(btnverCitas);
 		
 		textNombreA = new JTextField();
