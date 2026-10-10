@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ItemEvent;
 
 public class GUIveterinaria extends JFrame {
@@ -92,18 +93,18 @@ public class GUIveterinaria extends JFrame {
 				comboBoxraza.removeAllItems();
 				if(seleccion.equals("Perro")){
 					comboBoxraza.addItem("Golden Retriver");
-					comboBoxraza.addItem("Pastor Alemán");
+					comboBoxraza.addItem("Pastor Aleman");
 					comboBoxraza.addItem("Bulldog Francés");
 					comboBoxraza.addItem("Chihuahua");
 				}
 				if(seleccion.equals("Gato")){
-					comboBoxraza.addItem("Siamés");
+					comboBoxraza.addItem("Siames");
 					comboBoxraza.addItem("Maine Coon");
 					comboBoxraza.addItem("Persa");
 					comboBoxraza.addItem("Sphynx");
 				}
 				if(seleccion.equals("Serpiente")){
-					comboBoxraza.addItem("Pitón Real");
+					comboBoxraza.addItem("Piton Real");
 					comboBoxraza.addItem("Falsa Coral");
 					comboBoxraza.addItem("Boa Constrictor");
 					comboBoxraza.addItem("Serpiente del Maíz");
@@ -117,7 +118,7 @@ public class GUIveterinaria extends JFrame {
 				if(seleccion.equals("Pez")){
 					comboBoxraza.addItem("Betta");
 					comboBoxraza.addItem("Guppy");
-					comboBoxraza.addItem("Ángel");
+					comboBoxraza.addItem("Angel");
 					comboBoxraza.addItem("Goldfish");
 				}
 
@@ -131,6 +132,10 @@ public class GUIveterinaria extends JFrame {
 		comboBoxespecie.addItem("Serpiente");
 		comboBoxespecie.addItem("Perico");
 		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(391, 72, 238, 144);
+		contentPane.add(textArea);
+		
 		JButton btnLlenar = new JButton("Llnear Formulario");
 		btnLlenar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -139,13 +144,14 @@ public class GUIveterinaria extends JFrame {
 				String especie = (String) comboBoxespecie.getSelectedItem();
 				String raza = (String) comboBoxraza.getSelectedItem();
 				animal animal1 = new animal(textNombreA.getText(),Integer.parseInt(textEdad.getText()),especie,raza);
-				java.util.Date fechaUtil = (java.util.Date) spinner.getValue();
+				java.util.Date fechaUtil = (java.util.Date) spinner.getValue();//este tipo de spinner lo use solamente para la fecha y consulte en IA para que se viera de esa manera, lo lei y entendi como funciono
 				SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 				String textoFecha = formato.format(fechaUtil);
 				LocalDate fechaCita = LocalDate.parse(textoFecha);
+				
 				cita cita1 = new cita(fechaCita,textNombreVet.getText(),animal1,dueño1,"");
 				listado.add(cita1);
-				JOptionPane.showMessageDialog(null, "Formulario Llenado, solo Falta"+"/n"+"que el doctor llene las observaciones");
+				JOptionPane.showMessageDialog(null, "Formulario Llenado, solo Falta"+"que el doctor llene las observaciones");
 				
 			}
 		});
@@ -154,11 +160,61 @@ public class GUIveterinaria extends JFrame {
 		JButton btnObservaciones = new JButton("Observaciones ");
 		btnObservaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(textArea.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Favor de escribir las observaciones del paciente");
+				}
+				else {
+					for(cita i: listado) {
+						if(i.getObsrvacion().isEmpty()) {
+						i.setObsrvacion(textArea.getText());
+						JOptionPane.showMessageDialog(null, "Se guardo las observaciones en el expediente de la cita");
+						}
+					}
+				}
 			}
 		});
 		toolBar.add(btnObservaciones);
 		
 		JButton btnverCitas = new JButton("Ver Citas");
+		btnverCitas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean bandera = true;
+				int respuesta = Integer.parseInt(JOptionPane.showInputDialog(null, "Podemos buscar una mascota en especifico ó simplemente listarte todas las que hay, escribe:\n"+
+				"1 (Si quieres buscarlo de manera individual, es decir uno escifico)\n"+ "2 (Si quieres listar todos los animales)"));
+				if(respuesta == 1) {
+					JOptionPane.showMessageDialog(null, "Necesito saber que mascota deseas buscar y en que fecha, por favor indica en el siguiente orden:\n"+
+							"Fecha (DD/MM/AAAA)\n"+
+							"Nombre de la mascota\n"+
+							"Especie");
+					DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					LocalDate fechaIngresada = LocalDate.parse(JOptionPane.showInputDialog(null,"Fecha (DD/MM/AAAA)"),formato);
+					String nombre = JOptionPane.showInputDialog(null,"Nombre de la mascota");
+					String especie = JOptionPane.showInputDialog(null,"Especie de la mascota");
+					for(cita i:listado) {
+						if(i.getFecha().equals(fechaIngresada)&&i.getAnimal().getNombre().equals(nombre)&&i.getAnimal().getEspecie().equals(especie)) {
+							JOptionPane.showMessageDialog(null, "La mascota "+i.getAnimal().getNombre()+" de la especie "+i.getAnimal().getEspecie()+"\n"+
+									" Y raza "+i.getAnimal().getRaza()+" tiene "+i.getAnimal().getEdad()+" años de edad.\n"+"Su dueño "+i.getDueño().getNombre()+
+									" "+i.getDueño().getApellido()+" con su correo "+i.getDueño().getCorreo()+" y su numero de telefono "+i.getDueño().getTelefono()+
+									".\n"+"En la fecha "+i.getFecha());
+							JOptionPane.showMessageDialog(null, "La observacion escrita por el veterinario es la siguiente:\n"+i.getObsrvacion());
+							bandera = false;
+							break;
+						}
+					}
+					if(bandera) {
+						JOptionPane.showMessageDialog(null, "No existe registro de esta mascota este dia, revise bien si los datos introducidos son correctos");
+					}
+				}
+				else {
+					for(cita i:listado) {
+					JOptionPane.showMessageDialog(null, "La mascota "+i.getAnimal().getNombre()+" de la especie "+i.getAnimal().getEspecie()+"\n"+
+							" Y raza "+i.getAnimal().getRaza()+" tiene "+i.getAnimal().getEdad()+" años de edad.\n"+"Su dueño "+i.getDueño().getNombre()+
+							" "+i.getDueño().getApellido()+" con su correo "+i.getDueño().getCorreo()+" y su numero de telefono "+i.getDueño().getTelefono()+
+							".\n"+"En la fecha "+i.getFecha());
+					}
+				}
+			}
+		});
 		toolBar.add(btnverCitas);
 		
 		textNombreA = new JTextField();
@@ -226,9 +282,7 @@ public class GUIveterinaria extends JFrame {
 		lblTelefono.setBounds(190, 178, 44, 12);
 		contentPane.add(lblTelefono);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(391, 72, 238, 144);
-		contentPane.add(textArea);
+		
 		
 		JLabel lblNewLabel_2 = new JLabel("Animal");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -267,4 +321,5 @@ public class GUIveterinaria extends JFrame {
 		
 
 	}
+	
 }

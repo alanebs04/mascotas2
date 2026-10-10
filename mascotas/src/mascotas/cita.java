@@ -49,7 +49,15 @@ public class cita implements Comparable<cita>{
 	@Override
 	public int compareTo(cita o) {
 		// TODO Auto-generated method stub
-		return this.fecha.compareTo(o.getFecha());
+		int comparacionFecha = this.fecha.compareTo(o.getFecha());
+	    if (comparacionFecha != 0) {
+	        return comparacionFecha;
+	    }
+	    int comparacionNombre = this.Animal.getNombre().compareTo(o.getAnimal().getNombre());
+	    if (comparacionNombre != 0) {
+	        return comparacionNombre;
+	    }
+	    return 0;
 	}
 	
 
