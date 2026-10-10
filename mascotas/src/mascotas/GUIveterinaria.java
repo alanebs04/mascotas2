@@ -176,7 +176,9 @@ public class GUIveterinaria extends JFrame {
 			        areaMensaje.setEditable(false);
 			        JScrollPane scroll = new JScrollPane(areaMensaje);
 			        scroll.setPreferredSize(new java.awt.Dimension(400, 300));
-			        JOptionPane.showMessageDialog(null, scroll, "Citas guardadas (" + listado.size() + ")", JOptionPane.INFORMATION_MESSAGE);
+			        
+			        JOptionPane.showMessageDialog(null, scroll, "Citas guardadas (" + listado.size() + ")",
+JOptionPane.INFORMATION_MESSAGE);
 		
 		}
 	});
